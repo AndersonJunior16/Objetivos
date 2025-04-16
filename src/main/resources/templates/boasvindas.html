@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo - Sistema de Objetivos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<nav class="bg-indigo-600 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-xl font-bold">Sistema de Objetivos</span>
+                </div>
+                <div class="ml-6 flex items-center space-x-4">
+                    <a th:href="@{/Pessoas/ui/boasvindas}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-500">Home</a>
+                    <a th:href="@{/Pessoas/ui/listar}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-500">Pessoas</a>
+                    <a th:href="@{/objetivos/ui/listar}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-500">Objetivos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div th:if="${mensagem}" class="mb-4 p-4 rounded-md bg-green-50 border border-green-200">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800" th:text="${mensagem}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="px-4 py-5 sm:px-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+            <h1 class="text-3xl font-bold">Bem-vindo ao Sistema de Objetivos</h1>
+            <p class="mt-1 max-w-2xl text-sm">Gerencie pessoas e seus objetivos de forma eficiente.</p>
+        </div>
+        <div class="px-4 py-5 sm:p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-indigo-50 p-6 rounded-lg shadow-sm">
+                    <h2 class="text-xl font-semibold text-indigo-700 mb-4">Pessoas Cadastradas</h2>
+                    <p class="text-gray-600 mb-4">Visualize e gerencie todas as pessoas cadastradas no sistema.</p>
+                    <div class="mt-2">
+                        <a th:href="@{/Pessoas/ui/listar}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Ver Pessoas
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-purple-50 p-6 rounded-lg shadow-sm">
+                    <h2 class="text-xl font-semibold text-purple-700 mb-4">Objetivos</h2>
+                    <p class="text-gray-600 mb-4">Crie e gerencie objetivos para atribuir às pessoas.</p>
+                    <div class="mt-2">
+                        <a th:href="@{/objetivos/ui/listar}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            Ver Objetivos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8" th:if="${not #lists.isEmpty(ninjas)}">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Pessoas Recentes</h3>
+                <div class="bg-white shadow overflow-hidden sm:rounded-md">
+                    <ul class="divide-y divide-gray-200">
+                        <li th:each="pessoa : ${ninjas}">
+                            <a th:href="@{/Pessoas/ui/listar/{id}(id=${pessoa.id})}" class="block hover:bg-gray-50">
+                                <div class="px-4 py-4 sm:px-6">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-sm font-medium text-indigo-600 truncate" th:text="${pessoa.nome}">Nome da Pessoa</p>
+                                        <div class="ml-2 flex-shrink-0 flex">
+                                            <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" th:if="${pessoa.objetivosModel != null}" th:text="${pessoa.objetivosModel.nome}">Objetivo</p>
+                                            <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800" th:if="${pessoa.objetivosModel == null}">Sem objetivo</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 sm:flex sm:justify-between">
+                                        <div class="sm:flex">
+                                            <p class="flex items-center text-sm text-gray-500">
+                                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                                </svg>
+                                                <span th:text="${pessoa.email}">Email</span>
+                                            </p>
+                                        </div>
+                                        <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                            <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span th:text="${'Idade: ' + pessoa.idade}">Idade</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-white mt-12 py-6 border-t">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-gray-500 text-sm">
+            &copy; 2024 Sistema de Objetivos. Todos os direitos reservados.
+        </p>
+    </div>
+</footer>
+</body>
+</html>
